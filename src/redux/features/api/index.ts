@@ -1,9 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const apiSlice = createApi({
-    reducerPath: 'api',
+    reducerPath: "api",
     baseQuery: fetchBaseQuery({
-        baseUrl: process.env.REACT_APP_API_URL,
+        baseUrl: import.meta.env.REACT_APP_API_URL as string,
     }),
     endpoints: () => ({}),
 });
