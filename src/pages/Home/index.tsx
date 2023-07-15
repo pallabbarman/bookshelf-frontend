@@ -1,5 +1,4 @@
 import { Box, Grid } from "@mui/material";
-
 import { lazy } from "react";
 import { toast } from "react-toastify";
 import { useGetBooksQuery } from "redux/features/book";
