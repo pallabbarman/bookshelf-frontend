@@ -1,10 +1,22 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import NavDrawer from "../NavDrawer";
 import Searchbox from "../Searchbox";
 
 function Navbar() {
+    const [mobileMenu, setMobileMenu] = useState(false);
+
+    const handleOpenMenu = () => {
+        setMobileMenu(true);
+    };
+
+    const handleCloseMenu = () => {
+        setMobileMenu(false);
+    };
+
     return (
         <Box sx={{ flexGrow: 1 }} mb={8}>
             <AppBar position="fixed">
@@ -15,6 +27,7 @@ function Navbar() {
                         color="inherit"
                         aria-label="open drawer"
                         sx={{ mr: 2, display: { md: "none", sm: "block" } }}
+                        onClick={handleOpenMenu}
                     >
                         <MenuIcon />
                     </IconButton>
@@ -37,16 +50,16 @@ function Navbar() {
                         sx={{
                             mr: 2,
                             display: {
+                                md: "block",
                                 xs: "none",
-                                sm: "block",
                             },
                         }}
                     >
                         <Button
                             color="inherit"
-                            href="/"
                             variant="text"
-                            component="a"
+                            component={NavLink}
+                            to="/"
                             sx={{
                                 ml: 1,
                             }}
@@ -55,9 +68,9 @@ function Navbar() {
                         </Button>
                         <Button
                             color="inherit"
-                            href="/"
                             variant="text"
-                            component="a"
+                            component={NavLink}
+                            to="/"
                             sx={{
                                 ml: 1,
                             }}
@@ -66,6 +79,7 @@ function Navbar() {
                         </Button>
                     </Box>
                     <Searchbox />
+                    <NavDrawer open={mobileMenu} onClose={handleCloseMenu} />
                 </Toolbar>
             </AppBar>
         </Box>
