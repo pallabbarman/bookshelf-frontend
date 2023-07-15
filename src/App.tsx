@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import store from "redux/app";
 import router from "./routes/Router";
 

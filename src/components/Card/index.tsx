@@ -7,23 +7,30 @@ import {
     Grid,
     Typography,
 } from "@mui/material";
+import { IBook } from "types/book";
 
-function BlogCard({ blog }) {
-    const { title, description, username, thumbnail, createdAt } = blog;
+interface BookCardProps {
+    book: IBook;
+}
+
+function BookCard({ book }: BookCardProps) {
+    console.log(book);
+    const { author, genre, image, title, user } = book;
+    const { name } = user;
 
     return (
         <Grid item>
             <Card sx={{ maxWidth: 345 }}>
                 <CardHeader
-                    avatar={<Avatar alt={title} src={thumbnail} />}
-                    title={username}
-                    subheader={createdAt}
+                    avatar={<Avatar alt={name.firstName} src={image} />}
+                    title={title}
+                    subheader={author}
                 />
                 <CardMedia
                     component="img"
                     height="194"
-                    image={thumbnail}
-                    alt={title}
+                    image={image}
+                    alt={author}
                 />
                 <CardContent>
                     <Typography
@@ -37,7 +44,7 @@ function BlogCard({ blog }) {
                             display: "-webkit-box",
                         }}
                     >
-                        {description}
+                        {genre}
                     </Typography>
                 </CardContent>
             </Card>
@@ -45,4 +52,4 @@ function BlogCard({ blog }) {
     );
 }
 
-export default BlogCard;
+export default BookCard;
