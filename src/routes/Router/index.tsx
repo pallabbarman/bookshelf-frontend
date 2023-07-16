@@ -1,4 +1,5 @@
 import MainLayout from "layouts/Main";
+import Book from "pages/Book";
 import Home from "pages/Home";
 import Login from "pages/Login";
 import Registration from "pages/Registration";
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
             {
                 path: "/signup",
                 element: <Registration />,
+            },
+            {
+                path: "/books/:id",
+                element: <Book />,
             },
         ],
     },

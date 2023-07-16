@@ -36,13 +36,26 @@ const NavDrawer = ({ open, onClose }: NavDrawerProps) => {
                             <ListItemIcon sx={{ minWidth: "30px" }}>
                                 <LoginIcon />
                             </ListItemIcon>
+                            <ListItemText primary={"All Books"} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem
+                        disablePadding
+                        component={NavLink}
+                        to="/login"
+                        sx={{ color: "inherit" }}
+                    >
+                        <ListItemButton>
+                            <ListItemIcon sx={{ minWidth: "30px" }}>
+                                <LoginIcon />
+                            </ListItemIcon>
                             <ListItemText primary={"Login"} />
                         </ListItemButton>
                     </ListItem>
                     <ListItem
                         disablePadding
                         component={NavLink}
-                        to="/"
+                        to="/signup"
                         sx={{ color: "inherit" }}
                     >
                         <ListItemButton>

@@ -7,9 +7,12 @@ const bookApi = apiSlice.injectEndpoints({
         getBooks: builder.query<IApiResponse<IBook[]>, void>({
             query: () => "/books",
         }),
+        getSingleBook: builder.query<IApiResponse<IBook>, string>({
+            query: (id) => `/books/${id}`,
+        }),
     }),
 });
 
-export const { useGetBooksQuery } = bookApi;
+export const { useGetBooksQuery, useGetSingleBookQuery } = bookApi;
 
 export default bookApi;

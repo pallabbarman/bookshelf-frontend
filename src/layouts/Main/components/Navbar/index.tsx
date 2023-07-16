@@ -59,6 +59,17 @@ function Navbar() {
                             color="inherit"
                             variant="text"
                             component={NavLink}
+                            to="/"
+                            sx={{
+                                ml: 1,
+                            }}
+                        >
+                            All Books
+                        </Button>
+                        <Button
+                            color="inherit"
+                            variant="text"
+                            component={NavLink}
                             to="/login"
                             sx={{
                                 ml: 1,
