@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ILoginUserResponse } from "types/auth";
 
 const initialState: ILoginUserResponse = {
-    accessToken: undefined,
+    accessToken: "",
 };
 
 const authSlice = createSlice({
@@ -13,7 +13,7 @@ const authSlice = createSlice({
             state.accessToken = action.payload;
         },
         userLoggedOut: (state) => {
-            state.accessToken = undefined;
+            state.accessToken = "";
         },
     },
 });

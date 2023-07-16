@@ -14,20 +14,28 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useRegisterMutation } from "redux/features/auth/authApi";
+import { IGenericErrorResponse } from "types/error";
 import * as yup from "yup";
 
 const Registration = () => {
-    const [register, { isLoading, data }] = useRegisterMutation();
+    const [register, { isLoading, data, isError, error }] =
+        useRegisterMutation();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (data && data?.message) {
             toast.success(data.message);
         }
+        if (isError && error && "status" in error) {
+            const errorMessage = error.data as IGenericErrorResponse;
+            if (errorMessage) {
+                toast.error(errorMessage.message);
+            }
+        }
         if (data && data?.success === true) {
             navigate("/login");
         }
-    }, [data, navigate]);
+    }, [data, error, isError, navigate]);
 
     const validationSchema = yup.object({
         name: yup.object({

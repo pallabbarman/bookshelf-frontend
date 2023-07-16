@@ -4,7 +4,7 @@ export interface IUserLogin {
 }
 
 export interface ILoginUserResponse {
-    accessToken: string | undefined;
+    accessToken: string;
     refreshToken?: string;
 }
 

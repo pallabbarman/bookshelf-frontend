@@ -2,6 +2,7 @@ import { ILoginUserResponse, IUserLogin } from "types/auth";
 import { IApiResponse } from "types/response";
 import { IUser } from "types/user";
 import apiSlice from "../api";
+import { userLoggedIn } from "./authSlice";
 
 const authApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -18,6 +19,24 @@ const authApi = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data,
             }),
+            async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
+                try {
+                    const result = await queryFulfilled;
+
+                    localStorage.setItem(
+                        "auth",
+                        JSON.stringify({
+                            accessToken: result.data.data?.accessToken,
+                        })
+                    );
+
+                    dispatch(
+                        userLoggedIn(result.data.data?.accessToken as string)
+                    );
+                } catch (err) {
+                    // do nothing
+                }
+            },
         }),
     }),
 });

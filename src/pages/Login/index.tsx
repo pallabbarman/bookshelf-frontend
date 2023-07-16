@@ -28,7 +28,7 @@ const Login = () => {
         if (isError && error && "status" in error) {
             const errorMessage = error.data as IGenericErrorResponse;
             if (errorMessage) {
-                toast.success(errorMessage.message);
+                toast.error(errorMessage.message);
             }
         }
         if (data && data?.success === true) {
@@ -43,7 +43,10 @@ const Login = () => {
             .string()
             .email("Enter a valid email")
             .required("Email is required"),
-        password: yup.string().required("Password is required"),
+        password: yup
+            .string()
+            .min(6, "Password should be of minimum 6 characters length")
+            .required("Password is required"),
     });
 
     const formik = useFormik({
