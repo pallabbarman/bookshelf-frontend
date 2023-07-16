@@ -1,3 +1,4 @@
+import BookIcon from "@mui/icons-material/Book";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LoginIcon from "@mui/icons-material/Login";
 import {
@@ -11,6 +12,7 @@ import {
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { zeroArgsFunction } from "types/functions";
+
 interface NavDrawerProps {
     open: boolean;
     onClose: zeroArgsFunction;
@@ -34,7 +36,7 @@ const NavDrawer = ({ open, onClose }: NavDrawerProps) => {
                     >
                         <ListItemButton>
                             <ListItemIcon sx={{ minWidth: "30px" }}>
-                                <LoginIcon />
+                                <BookIcon />
                             </ListItemIcon>
                             <ListItemText primary={"All Books"} />
                         </ListItemButton>

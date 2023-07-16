@@ -21,7 +21,7 @@ const Comment = ({ comment }: CommentProps) => {
                 sx={{ padding: { md: "20px" }, margin: "1rem" }}
             >
                 <Grid item>
-                    <Avatar alt="Remy Sharp" src={""} />
+                    <Avatar alt={comment.reviewer.name.firstName} src={""} />
                 </Grid>
                 <Grid item>
                     <Typography

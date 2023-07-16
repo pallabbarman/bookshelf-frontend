@@ -1,4 +1,4 @@
-import { IBook } from "types/book";
+import { IBook, IReview } from "types/book";
 import { IApiResponse } from "types/response";
 import apiSlice from "../api";
 
@@ -10,9 +10,23 @@ const bookApi = apiSlice.injectEndpoints({
         getSingleBook: builder.query<IApiResponse<IBook>, string>({
             query: (id) => `/books/${id}`,
         }),
+        addComment: builder.mutation<
+            IApiResponse<void>,
+            { id: string; data: IReview }
+        >({
+            query: ({ id, data }) => ({
+                url: `/books/${id}/comments`,
+                method: "POST",
+                body: data,
+            }),
+        }),
     }),
 });
 
-export const { useGetBooksQuery, useGetSingleBookQuery } = bookApi;
+export const {
+    useGetBooksQuery,
+    useGetSingleBookQuery,
+    useAddCommentMutation,
+} = bookApi;
 
 export default bookApi;
