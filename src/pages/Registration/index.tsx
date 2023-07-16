@@ -9,37 +9,58 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useRegisterMutation } from "redux/features/auth/authApi";
-import { IUser } from "types/user";
+import * as yup from "yup";
 
 const Registration = () => {
     const [register, { isLoading, data }] = useRegisterMutation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (data && data?.message) {
             toast.success(data.message);
         }
-    }, [data]);
+        if (data && data?.success === true) {
+            navigate("/login");
+        }
+    }, [data, navigate]);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const validationSchema = yup.object({
+        name: yup.object({
+            firstName: yup.string().required("First Name is required"),
+            lastName: yup.string().required("Last Name is required"),
+        }),
+        email: yup
+            .string()
+            .email("Enter a valid email")
+            .required("Email is required"),
+        password: yup
+            .string()
+            .min(6, "Password should be of minimum 6 characters length")
+            .required("Password is required"),
+        address: yup.string().optional(),
+    });
 
-        const formData = new FormData(event.currentTarget);
-        const registrationData: IUser = {
+    const formik = useFormik({
+        initialValues: {
             name: {
-                firstName: formData.get("firstName") as string,
-                lastName: formData.get("lastName") as string,
+                firstName: "",
+                lastName: "",
             },
-            email: formData.get("email") as string,
-            password: formData.get("password") as string,
-            address: formData.get("address") as string,
-        };
-
-        await register(registrationData);
-    };
+            email: "",
+            password: "",
+            address: "",
+        },
+        validationSchema: validationSchema,
+        onSubmit: async (values, { resetForm }) => {
+            await register(values);
+            resetForm();
+        },
+    });
 
     return (
         <Container component="main" maxWidth="xs">
@@ -61,49 +82,96 @@ const Registration = () => {
                 </Typography>
                 <Box
                     component="form"
-                    onSubmit={handleSubmit}
+                    onSubmit={formik.handleSubmit}
                     noValidate
                     sx={{ mt: 1 }}
                 >
                     <TextField
                         margin="normal"
-                        required
                         fullWidth
                         id="firstName"
                         label="First Name"
                         name="firstName"
                         autoComplete="firstName"
                         autoFocus
+                        value={formik.values.name.firstName}
+                        onChange={(e) => {
+                            formik.handleChange({
+                                target: {
+                                    name: "name.firstName",
+                                    value: e.target.value,
+                                },
+                            });
+                        }}
+                        error={
+                            formik.touched.name?.firstName &&
+                            Boolean(formik.errors.name?.firstName)
+                        }
+                        helperText={
+                            formik.touched.name?.firstName &&
+                            formik.errors.name?.firstName
+                        }
                     />
                     <TextField
                         margin="normal"
-                        required
                         fullWidth
                         id="lastName"
                         label="Last Name"
                         name="lastName"
                         autoComplete="lastName"
                         autoFocus
+                        value={formik.values.name.lastName}
+                        onChange={(e) =>
+                            formik.handleChange({
+                                target: {
+                                    name: "name.lastName",
+                                    value: e.target.value,
+                                },
+                            })
+                        }
+                        error={
+                            formik.touched.name?.lastName &&
+                            Boolean(formik.errors.name?.lastName)
+                        }
+                        helperText={
+                            formik.touched.name?.lastName &&
+                            formik.errors.name?.lastName
+                        }
                     />
                     <TextField
                         margin="normal"
-                        required
                         fullWidth
                         id="email"
                         label="Email Address"
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={
+                            formik.touched.email && Boolean(formik.errors.email)
+                        }
+                        helperText={formik.touched.email && formik.errors.email}
                     />
                     <TextField
                         margin="normal"
-                        required
                         fullWidth
                         name="password"
                         label="Password"
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={
+                            formik.touched.password &&
+                            Boolean(formik.errors.password)
+                        }
+                        helperText={
+                            formik.touched.password && formik.errors.password
+                        }
                     />
                     <TextField
                         margin="normal"
@@ -119,8 +187,9 @@ const Registration = () => {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        disabled={isLoading}
                     >
-                        Sign In
+                        Sign Up
                     </Button>
                     <Grid container justifyContent="center">
                         <Grid item>
