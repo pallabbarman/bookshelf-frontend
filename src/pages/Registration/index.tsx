@@ -9,16 +9,36 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useRegisterMutation } from "redux/features/auth/authApi";
+import { IUser } from "types/user";
 
-const Login = () => {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+const Registration = () => {
+    const [register, { isLoading, data }] = useRegisterMutation();
+
+    useEffect(() => {
+        if (data && data?.message) {
+            toast.success(data.message);
+        }
+    }, [data]);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("email"),
-            password: data.get("password"),
-        });
+
+        const formData = new FormData(event.currentTarget);
+        const registrationData: IUser = {
+            name: {
+                firstName: formData.get("firstName") as string,
+                lastName: formData.get("lastName") as string,
+            },
+            email: formData.get("email") as string,
+            password: formData.get("password") as string,
+            address: formData.get("address") as string,
+        };
+
+        await register(registrationData);
     };
 
     return (
@@ -37,7 +57,7 @@ const Login = () => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    Sign Up
                 </Typography>
                 <Box
                     component="form"
@@ -45,6 +65,26 @@ const Login = () => {
                     noValidate
                     sx={{ mt: 1 }}
                 >
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="firstName"
+                        label="First Name"
+                        name="firstName"
+                        autoComplete="firstName"
+                        autoFocus
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="lastName"
+                        label="Last Name"
+                        name="lastName"
+                        autoComplete="lastName"
+                        autoFocus
+                    />
                     <TextField
                         margin="normal"
                         required
@@ -65,7 +105,15 @@ const Login = () => {
                         id="password"
                         autoComplete="current-password"
                     />
-
+                    <TextField
+                        margin="normal"
+                        fullWidth
+                        id="address"
+                        label="Address"
+                        name="address"
+                        autoComplete="address"
+                        autoFocus
+                    />
                     <Button
                         type="submit"
                         fullWidth
@@ -76,8 +124,8 @@ const Login = () => {
                     </Button>
                     <Grid container justifyContent="center">
                         <Grid item>
-                            <Link to="/signup">
-                                {"Don't have an account? Sign Up"}
+                            <Link to="/login">
+                                {"Already have an account? Login"}
                             </Link>
                         </Grid>
                     </Grid>
@@ -87,4 +135,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Registration;

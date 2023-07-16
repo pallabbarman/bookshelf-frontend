@@ -4,11 +4,11 @@ export interface UserName {
 }
 
 export interface IUser {
-    id: string;
+    id?: string;
     name: UserName;
     email: string;
     password: string;
-    role: string;
+    role?: string;
     address?: string;
     wishlist?: string[];
     currentlyReading?: {

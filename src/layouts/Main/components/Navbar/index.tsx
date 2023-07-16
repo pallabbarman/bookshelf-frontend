@@ -59,7 +59,7 @@ function Navbar() {
                             color="inherit"
                             variant="text"
                             component={NavLink}
-                            to="/"
+                            to="/login"
                             sx={{
                                 ml: 1,
                             }}
@@ -70,7 +70,7 @@ function Navbar() {
                             color="inherit"
                             variant="text"
                             component={NavLink}
-                            to="/"
+                            to="/signup"
                             sx={{
                                 ml: 1,
                             }}
