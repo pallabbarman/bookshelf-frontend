@@ -10,8 +10,6 @@ const CardSkeleton = lazy(() => import("components/Spinners/CardSkeleton"));
 const Home = () => {
     const { data: books, isLoading, isError } = useGetBooksQuery();
 
-    console.log(books);
-
     let content = null;
 
     if (isLoading) {

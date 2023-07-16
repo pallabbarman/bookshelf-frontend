@@ -10,10 +10,34 @@ import {
     Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useLoginMutation } from "redux/features/auth/authApi";
+import { IGenericErrorResponse } from "types/error";
 import * as yup from "yup";
 
 const Login = () => {
+    const [login, { isLoading, data, error, isError }] = useLoginMutation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (data && data?.message) {
+            toast.success(data.message);
+        }
+        if (isError && error && "status" in error) {
+            const errorMessage = error.data as IGenericErrorResponse;
+            if (errorMessage) {
+                toast.success(errorMessage.message);
+            }
+        }
+        if (data && data?.success === true) {
+            navigate("/");
+        }
+    }, [data, error, isError, navigate]);
+
+    console.log("error", error);
+
     const validationSchema = yup.object({
         email: yup
             .string()
@@ -28,8 +52,9 @@ const Login = () => {
             password: "",
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values, { resetForm }) => {
+            await login(values);
+            resetForm();
         },
     });
 
@@ -98,6 +123,7 @@ const Login = () => {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        disabled={isLoading}
                     >
                         Sign In
                     </Button>

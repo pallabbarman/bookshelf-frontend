@@ -13,7 +13,7 @@ function BookCard({ book }: BookCardProps) {
 
     return (
         <Grid item>
-            <Card sx={{ maxWidth: 345 }}>
+            <Card sx={{ width: 300 }}>
                 <CardMedia
                     component="img"
                     height="194"
