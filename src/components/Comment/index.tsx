@@ -6,8 +6,6 @@ interface CommentProps {
 }
 
 const Comment = ({ comment }: CommentProps) => {
-    console.log(comment);
-
     return (
         <Paper
             sx={{
@@ -16,7 +14,6 @@ const Comment = ({ comment }: CommentProps) => {
         >
             <Grid
                 container
-                wrap="nowrap"
                 spacing={2}
                 sx={{ padding: { md: "20px" }, margin: "1rem" }}
             >

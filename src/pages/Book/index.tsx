@@ -10,26 +10,23 @@ import {
 } from "@mui/material";
 import Comment from "components/Comment";
 import { useFormik } from "formik";
-import useAuth from "hooks/useAuth";
+import useAuthUser from "hooks/useAuthUser";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useLoginMutation } from "redux/features/auth/authApi";
-import { useGetSingleBookQuery } from "redux/features/book";
-import { useAppSelector } from "redux/hooks";
+import {
+    useAddCommentMutation,
+    useGetSingleBookQuery,
+} from "redux/features/book";
 import { IGenericErrorResponse } from "types/error";
 
 const Book = () => {
     const { id } = useParams<{ id: string }>();
     const { data } = useGetSingleBookQuery(id as string);
     const [addComment, { isLoading, data: commentData, error, isError }] =
-        useLoginMutation();
-    const isLoggedIn = useAuth();
-    const { accessToken } = useAppSelector((state) => state.auth);
+        useAddCommentMutation();
 
-    console.log("accessToken", accessToken);
-
-    console.log(isLoggedIn);
+    const authUser = useAuthUser();
 
     const bookData = data?.data;
     const publicationDate = bookData?.publicationDate;
@@ -50,12 +47,13 @@ const Book = () => {
     const formik = useFormik({
         initialValues: {
             comment: "",
-            reviewer: "",
+            reviewer: authUser && authUser.id,
         },
-
+        enableReinitialize: true,
         onSubmit: async (values, { resetForm }) => {
             console.log(values);
-            await addComment(values);
+            await addComment({ id, values });
+
             resetForm();
         },
     });

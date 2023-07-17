@@ -1,8 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ILoginUserResponse } from "types/auth";
 
-const initialState: ILoginUserResponse = {
-    accessToken: "",
+const storedAccessToken = localStorage.getItem("auth");
+
+interface InitialStateProps {
+    accessToken: string | null;
+}
+
+const initialState: InitialStateProps = {
+    accessToken: storedAccessToken,
 };
 
 const authSlice = createSlice({
@@ -11,9 +16,11 @@ const authSlice = createSlice({
     reducers: {
         userLoggedIn: (state, action: PayloadAction<string>) => {
             state.accessToken = action.payload;
+            localStorage.setItem("auth", action.payload);
         },
         userLoggedOut: (state) => {
-            state.accessToken = "";
+            state.accessToken = null;
+            localStorage.removeItem("auth");
         },
     },
 });
