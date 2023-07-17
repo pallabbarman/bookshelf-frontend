@@ -4,7 +4,7 @@ export interface IReview {
     id?: string;
     reviewer: IUser;
     comment: string;
-    date: Date;
+    date?: Date;
 }
 
 export interface IBook {

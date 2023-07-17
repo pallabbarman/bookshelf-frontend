@@ -92,7 +92,6 @@ const Login = () => {
                         label="Email Address"
                         name="email"
                         autoComplete="email"
-                        autoFocus
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}

@@ -101,7 +101,6 @@ const Registration = () => {
                         label="First Name"
                         name="firstName"
                         autoComplete="firstName"
-                        autoFocus
                         value={formik.values.name.firstName}
                         onChange={(e) => {
                             formik.handleChange({
@@ -127,7 +126,6 @@ const Registration = () => {
                         label="Last Name"
                         name="lastName"
                         autoComplete="lastName"
-                        autoFocus
                         value={formik.values.name.lastName}
                         onChange={(e) =>
                             formik.handleChange({
@@ -153,7 +151,6 @@ const Registration = () => {
                         label="Email Address"
                         name="email"
                         autoComplete="email"
-                        autoFocus
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -188,7 +185,6 @@ const Registration = () => {
                         label="Address"
                         name="address"
                         autoComplete="address"
-                        autoFocus
                     />
                     <Button
                         type="submit"

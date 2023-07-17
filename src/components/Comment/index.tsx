@@ -1,26 +1,23 @@
-import { Avatar, Grid, Paper, Typography } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import { IReview } from "types/book";
+import formatTimeAgo from "utils/date";
 
 interface CommentProps {
     comment: IReview;
 }
 
 const Comment = ({ comment }: CommentProps) => {
+    const date = formatTimeAgo(comment.date as Date);
     return (
-        <Paper
-            sx={{
-                width: { md: 1000, sm: 500, xs: 300 },
-            }}
-        >
+        <Paper>
             <Grid
                 container
-                spacing={2}
-                sx={{ padding: { md: "20px" }, margin: "1rem" }}
+                sx={{
+                    width: { md: 1000, sm: 500, xs: 300 },
+                    marginTop: "1rem",
+                }}
             >
-                <Grid item>
-                    <Avatar alt={comment.reviewer.name.firstName} src={""} />
-                </Grid>
-                <Grid item>
+                <Grid item sx={{ padding: "20px" }}>
                     <Typography
                         sx={{
                             fontWeight: 700,
@@ -31,6 +28,9 @@ const Comment = ({ comment }: CommentProps) => {
                         {comment.reviewer.name.lastName}
                     </Typography>
                     <Typography>{comment.comment}</Typography>
+                    <Typography color="text.secondary" mt={1}>
+                        {date}
+                    </Typography>
                 </Grid>
             </Grid>
         </Paper>
