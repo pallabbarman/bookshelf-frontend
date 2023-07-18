@@ -4,6 +4,7 @@ import Book from "pages/Book";
 import EditBook from "pages/EditBook";
 import Home from "pages/Home";
 import Login from "pages/Login";
+import NotFound from "pages/NotFound";
 import Registration from "pages/Registration";
 import { createBrowserRouter } from "react-router-dom";
 import PrivateRoute from "routes/PrivateRoute";
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
                 ),
             },
         ],
+    },
+    {
+        path: "*",
+        element: <NotFound />,
     },
 ]);
 
