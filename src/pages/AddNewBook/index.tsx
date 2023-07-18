@@ -27,6 +27,7 @@ const validationSchema = yup.object({
 
 const AddNewBook = () => {
     const [addBook, { data, isLoading, isError, error }] = useAddBookMutation();
+
     const authUser = useAuthUser();
 
     useEffect(() => {
@@ -57,6 +58,8 @@ const AddNewBook = () => {
             resetForm();
         },
     });
+
+    console.log(formik.values);
 
     return (
         <Container component="main">
@@ -135,13 +138,13 @@ const AddNewBook = () => {
                             label="Publication Date"
                             sx={{ width: "100%", marginTop: "15px" }}
                             value={formik.values.publicationDate}
-                            onChange={(value) =>
-                                formik.setFieldValue(
+                            onChange={(value) => {
+                                void formik.setFieldValue(
                                     "publicationDate",
                                     value,
                                     true
-                                )
-                            }
+                                );
+                            }}
                             slotProps={{
                                 textField: {
                                     error:
@@ -149,7 +152,7 @@ const AddNewBook = () => {
                                         Boolean(formik.errors.publicationDate),
                                     helperText:
                                         formik.touched.publicationDate &&
-                                        formik.errors.publicationDate,
+                                        String(formik.errors.publicationDate),
                                 },
                             }}
                         />
