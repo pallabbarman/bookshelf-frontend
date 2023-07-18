@@ -10,6 +10,13 @@ const bookApi = apiSlice.injectEndpoints({
         getSingleBook: builder.query<IApiResponse<IBook>, string>({
             query: (id) => `/books/${id}`,
         }),
+        addBook: builder.mutation<IApiResponse<IBook>, IBook>({
+            query: (data) => ({
+                url: `/books/add-new-book`,
+                method: "POST",
+                body: data,
+            }),
+        }),
         addComment: builder.mutation<
             IApiResponse<void>,
             { id: string; data: IReview }
@@ -26,6 +33,7 @@ const bookApi = apiSlice.injectEndpoints({
 export const {
     useGetBooksQuery,
     useGetSingleBookQuery,
+    useAddBookMutation,
     useAddCommentMutation,
 } = bookApi;
 

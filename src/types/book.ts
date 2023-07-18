@@ -8,12 +8,12 @@ export interface IReview {
 }
 
 export interface IBook {
-    id: string;
+    id?: string;
     title: string;
     author: string;
     genre: string;
-    image: string;
-    publicationDate: Date;
+    image?: string;
+    publicationDate: Date | number;
     user: IUser;
     reviews?: IReview[];
 }

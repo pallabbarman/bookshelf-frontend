@@ -12,21 +12,52 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useFormik } from "formik";
+import useAuthUser from "hooks/useAuthUser";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { useAddBookMutation } from "redux/features/book";
+import { IGenericErrorResponse } from "types/error";
+import * as yup from "yup";
+
+const validationSchema = yup.object({
+    title: yup.string().required("Title is required"),
+    author: yup.string().required("Author is required"),
+    genre: yup.string().required("Genre is required"),
+});
 
 const AddNewBook = () => {
+    const [addBook, { data, isLoading, isError, error }] = useAddBookMutation();
+    const authUser = useAuthUser();
+
+    useEffect(() => {
+        if (data && data?.message) {
+            toast.success(data.message);
+        }
+        if (isError && error && "status" in error) {
+            const errorMessage = error.data as IGenericErrorResponse;
+            if (errorMessage) {
+                toast.error(errorMessage.message);
+            }
+        }
+    }, [data, error, isError]);
+
     const formik = useFormik({
         initialValues: {
             title: "",
             author: "",
             genre: "",
             publicationDate: Date.now(),
+            user: authUser && authUser.id,
         },
-
+        validationSchema,
+        enableReinitialize: true,
         onSubmit: (values, { resetForm }) => {
             console.log(values);
+            // await addBook(values as unknown as IBook);
             resetForm();
         },
     });
+
     return (
         <Container component="main">
             <CssBaseline />
@@ -71,7 +102,6 @@ const AddNewBook = () => {
                         fullWidth
                         name="author"
                         label="Author"
-                        type="author"
                         id="author"
                         autoComplete="author"
                         value={formik.values.author}
@@ -90,7 +120,6 @@ const AddNewBook = () => {
                         fullWidth
                         name="genre"
                         label="Genre"
-                        type="genre"
                         id="genre"
                         autoComplete="genre"
                         value={formik.values.genre}
@@ -130,7 +159,7 @@ const AddNewBook = () => {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
-                        // disabled={isLoading}
+                        disabled={isLoading}
                     >
                         Add Book
                     </Button>

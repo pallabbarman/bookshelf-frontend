@@ -1,6 +1,6 @@
 import useAuth from "hooks/useAuth";
 import { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 interface PrivateRouteProps {
     children: ReactNode;
@@ -8,8 +8,13 @@ interface PrivateRouteProps {
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
     const isLoggedIn = useAuth();
+    const { pathname } = useLocation();
 
-    return isLoggedIn ? children : <Navigate to="/" />;
+    return isLoggedIn ? (
+        children
+    ) : (
+        <Navigate to="/login" state={{ path: pathname }} />
+    );
 };
 
 export default PrivateRoute;
