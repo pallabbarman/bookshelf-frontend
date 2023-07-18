@@ -17,7 +17,7 @@ import { useFormik } from "formik";
 import useAuth from "hooks/useAuth";
 import useAuthUser from "hooks/useAuthUser";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
     useAddCommentMutation,
@@ -26,6 +26,7 @@ import {
 } from "redux/features/book";
 import { IReview } from "types/book";
 import { IGenericErrorResponse } from "types/error";
+import { IUser } from "types/user";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
@@ -35,7 +36,8 @@ const validationSchema = yup.object({
 const Book = () => {
     const { id } = useParams<{ id: string }>();
     const { data, isLoading: bookLoading } = useGetSingleBookQuery(
-        id as string
+        id as string,
+        { refetchOnMountOrArgChange: true }
     );
     const [addComment, { isLoading, data: commentData, error, isError }] =
         useAddCommentMutation();
@@ -156,32 +158,36 @@ const Book = () => {
                                         justifyContent: "center",
                                     }}
                                 >
-                                    {/* {(bookData?.user as IUser).id ===
-                                        authUser?.id && ( */}
-                                    <Grid
-                                        container
-                                        spacing={3}
-                                        justifyContent={"space-between"}
-                                    >
-                                        <Grid item>
-                                            <Button
-                                                color="info"
-                                                variant="contained"
-                                            >
-                                                Edit
-                                            </Button>
+                                    {(bookData?.user as IUser).id ===
+                                        authUser?.id && (
+                                        <Grid
+                                            container
+                                            spacing={3}
+                                            justifyContent={"space-between"}
+                                        >
+                                            <Grid item>
+                                                <Button
+                                                    color="info"
+                                                    variant="contained"
+                                                    component={Link}
+                                                    to={`/edit-book/${
+                                                        id as string
+                                                    }`}
+                                                >
+                                                    Edit
+                                                </Button>
+                                            </Grid>
+                                            <Grid item>
+                                                <Button
+                                                    color="error"
+                                                    variant="contained"
+                                                    onClick={handleClickOpen}
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item>
-                                            <Button
-                                                color="error"
-                                                variant="contained"
-                                                onClick={handleClickOpen}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                    {/* )} */}
+                                    )}
                                     <Typography
                                         sx={{
                                             fontWeight: 700,

@@ -1,6 +1,7 @@
 import MainLayout from "layouts/Main";
 import AddNewBook from "pages/AddNewBook";
 import Book from "pages/Book";
+import EditBook from "pages/EditBook";
 import Home from "pages/Home";
 import Login from "pages/Login";
 import Registration from "pages/Registration";
@@ -33,6 +34,14 @@ const router = createBrowserRouter([
                 element: (
                     <PrivateRoute>
                         <AddNewBook />
+                    </PrivateRoute>
+                ),
+            },
+            {
+                path: "/edit-book/:id",
+                element: (
+                    <PrivateRoute>
+                        <EditBook />
                     </PrivateRoute>
                 ),
             },

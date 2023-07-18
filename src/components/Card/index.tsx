@@ -16,14 +16,14 @@ interface BookCardProps {
 function BookCard({ book }: BookCardProps) {
     const { author, genre, image, title, publicationDate, id } = book;
 
-    const date = new Date(publicationDate);
+    const date = new Date(publicationDate as Date);
 
     return (
         <Grid item>
             <Card sx={{ width: 300 }}>
                 <Box
                     component={Link}
-                    to={`/books/${id}`}
+                    to={`/books/${id as string}`}
                     sx={{ textDecoration: "none" }}
                 >
                     <CardMedia

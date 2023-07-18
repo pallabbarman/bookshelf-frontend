@@ -1,6 +1,9 @@
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
+import { useEffect, useState } from "react";
+import { searched } from "redux/features/filter";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -45,6 +48,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Searchbox() {
+    const { search } = useAppSelector((state) => state.filter);
+    const [input, setInput] = useState(search);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(searched(input));
+    }, [dispatch, input]);
+
     return (
         <Search>
             <SearchIconWrapper>
@@ -53,6 +64,8 @@ function Searchbox() {
             <StyledInputBase
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
             />
         </Search>
     );
