@@ -23,11 +23,11 @@ const validationSchema = yup.object({
     title: yup.string().required("Title is required"),
     author: yup.string().required("Author is required"),
     genre: yup.string().required("Genre is required"),
+    publicationDate: yup.date().required("Publication date is required"),
 });
 
 const AddNewBook = () => {
     const [addBook, { data, isLoading, isError, error }] = useAddBookMutation();
-
     const authUser = useAuthUser();
 
     useEffect(() => {
@@ -47,19 +47,16 @@ const AddNewBook = () => {
             title: "",
             author: "",
             genre: "",
-            publicationDate: Date.now(),
+            publicationDate: null,
             user: authUser && authUser.id,
         },
         validationSchema,
         enableReinitialize: true,
-        onSubmit: (values, { resetForm }) => {
-            console.log(values);
-            // await addBook(values as unknown as IBook);
+        onSubmit: async (values, { resetForm }) => {
+            await addBook({ ...values, user: values.user as string });
             resetForm();
         },
     });
-
-    console.log(formik.values);
 
     return (
         <Container component="main">

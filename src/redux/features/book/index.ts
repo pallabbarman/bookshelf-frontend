@@ -27,6 +27,12 @@ const bookApi = apiSlice.injectEndpoints({
                 body: data,
             }),
         }),
+        deleteBook: builder.mutation<IApiResponse<IBook>, string>({
+            query: (id) => ({
+                url: `/books/${id}`,
+                method: "DELETE",
+            }),
+        }),
     }),
 });
 
@@ -35,6 +41,7 @@ export const {
     useGetSingleBookQuery,
     useAddBookMutation,
     useAddCommentMutation,
+    useDeleteBookMutation,
 } = bookApi;
 
 export default bookApi;

@@ -13,7 +13,7 @@ export interface IBook {
     author: string;
     genre: string;
     image?: string;
-    publicationDate: Date | number;
-    user: IUser;
+    publicationDate: Date | null;
+    user: IUser | string;
     reviews?: IReview[];
 }

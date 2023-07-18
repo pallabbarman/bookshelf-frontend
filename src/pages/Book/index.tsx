@@ -4,6 +4,9 @@ import {
     Card,
     CardContent,
     CardMedia,
+    Dialog,
+    DialogActions,
+    DialogTitle,
     Grid,
     TextField,
     Typography,
@@ -13,11 +16,12 @@ import CircularLoader from "components/Spinners/CircularLoader";
 import { useFormik } from "formik";
 import useAuth from "hooks/useAuth";
 import useAuthUser from "hooks/useAuthUser";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
     useAddCommentMutation,
+    useDeleteBookMutation,
     useGetSingleBookQuery,
 } from "redux/features/book";
 import { IReview } from "types/book";
@@ -35,6 +39,17 @@ const Book = () => {
     );
     const [addComment, { isLoading, data: commentData, error, isError }] =
         useAddCommentMutation();
+    const [
+        deleteBook,
+        {
+            data: deleteData,
+            isError: deleteIsError,
+            error: deleteError,
+            isLoading: deleteLoading,
+        },
+    ] = useDeleteBookMutation();
+    const [open, setOpen] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const loggedInUser = useAuth();
     const authUser = useAuthUser();
@@ -42,6 +57,21 @@ const Book = () => {
     const bookData = data?.data;
     const publicationDate = bookData?.publicationDate;
     const date = new Date(publicationDate as Date);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleDelete = (id: string) => {
+        void (async () => {
+            await deleteBook(id);
+            handleClose();
+        })();
+    };
 
     useEffect(() => {
         if (commentData && commentData?.message) {
@@ -53,7 +83,25 @@ const Book = () => {
                 toast.error(errorMessage.message);
             }
         }
-    }, [commentData, error, isError]);
+        if (deleteData && deleteData?.message) {
+            toast.success(deleteData.message);
+            navigate("/");
+        }
+        if (deleteIsError && deleteError && "status" in deleteError) {
+            const errorMessage = deleteError.data as IGenericErrorResponse;
+            if (errorMessage) {
+                toast.error(errorMessage.message);
+            }
+        }
+    }, [
+        commentData,
+        deleteData,
+        deleteError,
+        deleteIsError,
+        error,
+        isError,
+        navigate,
+    ]);
 
     const formik = useFormik({
         initialValues: {
@@ -99,6 +147,7 @@ const Book = () => {
                                         objectFit: { md: "fill" },
                                     }}
                                 />
+
                                 <CardContent
                                     sx={{
                                         display: "flex",
@@ -107,6 +156,32 @@ const Book = () => {
                                         justifyContent: "center",
                                     }}
                                 >
+                                    {/* {(bookData?.user as IUser).id ===
+                                        authUser?.id && ( */}
+                                    <Grid
+                                        container
+                                        spacing={3}
+                                        justifyContent={"space-between"}
+                                    >
+                                        <Grid item>
+                                            <Button
+                                                color="info"
+                                                variant="contained"
+                                            >
+                                                Edit
+                                            </Button>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button
+                                                color="error"
+                                                variant="contained"
+                                                onClick={handleClickOpen}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                    {/* )} */}
                                     <Typography
                                         sx={{
                                             fontWeight: 700,
@@ -196,6 +271,33 @@ const Book = () => {
                             </Grid>
                         )}
                     </Grid>
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                            {"Are you sure you want to delete this item?"}
+                        </DialogTitle>
+                        <DialogActions>
+                            <Button
+                                onClick={handleClose}
+                                color="secondary"
+                                variant="contained"
+                            >
+                                Disagree
+                            </Button>
+                            <Button
+                                onClick={() => handleDelete(id as string)}
+                                autoFocus
+                                color="error"
+                                variant="contained"
+                                disabled={deleteLoading}
+                            >
+                                Agree
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Box>
             )}
         </>
