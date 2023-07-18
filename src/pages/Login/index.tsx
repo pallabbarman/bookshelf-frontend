@@ -17,6 +17,17 @@ import { useLoginMutation } from "redux/features/auth/authApi";
 import { IGenericErrorResponse } from "types/error";
 import * as yup from "yup";
 
+const validationSchema = yup.object({
+    email: yup
+        .string()
+        .email("Enter a valid email")
+        .required("Email is required"),
+    password: yup
+        .string()
+        .min(6, "Password should be of minimum 6 characters length")
+        .required("Password is required"),
+});
+
 const Login = () => {
     const [login, { isLoading, data, error, isError }] = useLoginMutation();
     const navigate = useNavigate();
@@ -35,19 +46,6 @@ const Login = () => {
             navigate("/");
         }
     }, [data, error, isError, navigate]);
-
-    console.log("error", error);
-
-    const validationSchema = yup.object({
-        email: yup
-            .string()
-            .email("Enter a valid email")
-            .required("Email is required"),
-        password: yup
-            .string()
-            .min(6, "Password should be of minimum 6 characters length")
-            .required("Password is required"),
-    });
 
     const formik = useFormik({
         initialValues: {
@@ -119,7 +117,6 @@ const Login = () => {
                             formik.touched.password && formik.errors.password
                         }
                     />
-
                     <Button
                         type="submit"
                         fullWidth

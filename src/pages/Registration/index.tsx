@@ -17,6 +17,22 @@ import { useRegisterMutation } from "redux/features/auth/authApi";
 import { IGenericErrorResponse } from "types/error";
 import * as yup from "yup";
 
+const validationSchema = yup.object({
+    name: yup.object({
+        firstName: yup.string().required("First Name is required"),
+        lastName: yup.string().required("Last Name is required"),
+    }),
+    email: yup
+        .string()
+        .email("Enter a valid email")
+        .required("Email is required"),
+    password: yup
+        .string()
+        .min(6, "Password should be of minimum 6 characters length")
+        .required("Password is required"),
+    address: yup.string().optional(),
+});
+
 const Registration = () => {
     const [register, { isLoading, data, isError, error }] =
         useRegisterMutation();
@@ -36,22 +52,6 @@ const Registration = () => {
             navigate("/login");
         }
     }, [data, error, isError, navigate]);
-
-    const validationSchema = yup.object({
-        name: yup.object({
-            firstName: yup.string().required("First Name is required"),
-            lastName: yup.string().required("Last Name is required"),
-        }),
-        email: yup
-            .string()
-            .email("Enter a valid email")
-            .required("Email is required"),
-        password: yup
-            .string()
-            .min(6, "Password should be of minimum 6 characters length")
-            .required("Password is required"),
-        address: yup.string().optional(),
-    });
 
     const formik = useFormik({
         initialValues: {

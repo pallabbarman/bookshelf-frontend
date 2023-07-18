@@ -78,18 +78,33 @@ const NavDrawer = ({ open, onClose }: NavDrawerProps) => {
                             </ListItem>
                         </>
                     ) : (
-                        <ListItem
-                            disablePadding
-                            sx={{ color: "inherit" }}
-                            onClick={() => dispatch(userLoggedOut())}
-                        >
-                            <ListItemButton>
-                                <ListItemIcon sx={{ minWidth: "30px" }}>
-                                    <LogoutIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Logout"} />
-                            </ListItemButton>
-                        </ListItem>
+                        <>
+                            <ListItem
+                                disablePadding
+                                component={NavLink}
+                                to="/add-new-book"
+                                sx={{ color: "inherit" }}
+                            >
+                                <ListItemButton>
+                                    <ListItemIcon sx={{ minWidth: "30px" }}>
+                                        <HowToRegIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={"Add New"} />
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem
+                                disablePadding
+                                sx={{ color: "inherit" }}
+                                onClick={() => dispatch(userLoggedOut())}
+                            >
+                                <ListItemButton>
+                                    <ListItemIcon sx={{ minWidth: "30px" }}>
+                                        <LogoutIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={"Logout"} />
+                                </ListItemButton>
+                            </ListItem>
+                        </>
                     )}
                 </List>
             </Box>

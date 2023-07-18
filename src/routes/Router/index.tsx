@@ -1,4 +1,5 @@
 import MainLayout from "layouts/Main";
+import AddNewBook from "pages/AddNewBook";
 import Book from "pages/Book";
 import Home from "pages/Home";
 import Login from "pages/Login";
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: "/books/:id",
                 element: <Book />,
+            },
+            {
+                path: "/add-new-book",
+                element: <AddNewBook />,
             },
         ],
     },

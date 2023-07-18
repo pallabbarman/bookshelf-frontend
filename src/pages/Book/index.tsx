@@ -22,6 +22,11 @@ import {
 } from "redux/features/book";
 import { IReview } from "types/book";
 import { IGenericErrorResponse } from "types/error";
+import * as yup from "yup";
+
+const validationSchema = yup.object({
+    comment: yup.string().required("Comment is required"),
+});
 
 const Book = () => {
     const { id } = useParams<{ id: string }>();
@@ -55,9 +60,9 @@ const Book = () => {
             comment: "",
             reviewer: authUser && authUser.id,
         },
+        validationSchema,
         enableReinitialize: true,
         onSubmit: async (values, { resetForm }) => {
-            console.log(values);
             await addComment({
                 id: id as string,
                 data: values as unknown as IReview,

@@ -98,16 +98,29 @@ function Navbar() {
                                 </Button>
                             </>
                         ) : (
-                            <Button
-                                color="inherit"
-                                variant="text"
-                                sx={{
-                                    ml: 1,
-                                }}
-                                onClick={() => dispatch(userLoggedOut())}
-                            >
-                                Logout
-                            </Button>
+                            <>
+                                <Button
+                                    color="inherit"
+                                    variant="text"
+                                    component={NavLink}
+                                    to="/add-new-book"
+                                    sx={{
+                                        ml: 1,
+                                    }}
+                                >
+                                    Add New
+                                </Button>
+                                <Button
+                                    color="inherit"
+                                    variant="text"
+                                    sx={{
+                                        ml: 1,
+                                    }}
+                                    onClick={() => dispatch(userLoggedOut())}
+                                >
+                                    Logout
+                                </Button>
+                            </>
                         )}
                     </Box>
                     <Searchbox />
